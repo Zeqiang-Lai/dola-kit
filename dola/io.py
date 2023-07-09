@@ -25,7 +25,7 @@ def lo(*xs, verbose=0):
             text = ""
             text += f"[orange1]Array {name}[/orange1] {x.shape} {x.dtype}"
             if x.size > 0:
-                text += f"∈ [{x.min()}, {x.max()}]"
+                text += f" ∈ [{x.min()}, {x.max()}]"
             if verbose >= 1:
                 text += f" μ = {x.mean()} σ = {x.std()}"
             # detect abnormal values
