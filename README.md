@@ -6,7 +6,10 @@
 </p>
 
 ## Install
-
+<a href="[https://pypi.org/project/dprox/](https://pypi.org/project/dola/)">
+<img alt="PyPI - Downloads" src="https://img.shields.io/pypi/v/dola">
+</a>
+    
 ```bash
 pip install dola
 ```
