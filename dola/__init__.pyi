@@ -8,7 +8,13 @@ __all__ = [
     'fileext', 'filename',
     
     # modules
-    'metrics'
+    'metrics', 'plot', 'examples',
+    
+    # plot
+    'imshow',
+    
+    # convert
+    'to_pillow_image',
 ]
 
 from .io import (
@@ -21,3 +27,8 @@ from .utils import instantiate, datetime_str, cmd_str, auto_rename
 from .os import fileext, filename
 
 from . import metrics
+from . import plot
+from . import examples
+
+from .plot import imshow
+from .convert import to_pillow_image
