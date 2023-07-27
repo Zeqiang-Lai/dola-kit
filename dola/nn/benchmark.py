@@ -17,16 +17,17 @@ class synchronize_timer:
         ```python
         with synchronize_timer() as t:
             run()
-        print(t.time)
+        print(t())
         ```
         
-        `t.time` in ms.
+        `t()` in ms.
     """
     
     def __enter__(self):
         self.start = torch.cuda.Event(enable_timing=True)
         self.end = torch.cuda.Event(enable_timing=True)
         self.start.record()
+        return lambda: self.time
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         self.end.record()
