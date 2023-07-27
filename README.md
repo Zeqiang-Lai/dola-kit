@@ -12,6 +12,7 @@
     
 ```bash
 pip install dola
+pip install git+https://github.com/Zeqiang-Lai/dola-kit.git
 ```
 
 ## Usage
