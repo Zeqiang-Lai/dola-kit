@@ -15,6 +15,9 @@ __all__ = [
     
     # convert
     'to_pillow_image',
+    
+    # trasnform
+    'imresize',
 ]
 
 from .io import (
@@ -32,3 +35,5 @@ from . import examples
 
 from .plot import imshow
 from .convert import to_pillow_image
+
+from .transform import imresize
