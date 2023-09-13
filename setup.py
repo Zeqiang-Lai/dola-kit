@@ -5,6 +5,6 @@ setup(
     author='Zeqiang Lai',
     author_email='laizeqiang@outlook.com',
     packages=find_packages(),
-    version='0.0.2',
+    version='0.0.3',
     include_package_data=True,
 )
