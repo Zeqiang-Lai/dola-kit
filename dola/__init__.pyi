@@ -18,6 +18,9 @@ __all__ = [
     
     # trasnform
     'imresize',
+    
+    # download
+    'download_url'
 ]
 
 from .io import (
@@ -37,3 +40,4 @@ from .plot import imshow
 from .convert import to_pillow_image
 
 from .transform import imresize
+from .download import download_url
