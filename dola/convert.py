@@ -20,8 +20,28 @@ def bgr2rgb():
     return img
 
 
-def to_pillow_image(image: np.ndarray):
+def to_pil(image: np.ndarray):
+    """ convert a ndarray into a pilllow image.
+        - the input ndarray can be [H,W], [H,W,3], [H,W,4], [H,W,1]
+        - float32, uint8, [0,1], [0,255] are all acceptable.
+        - Noted that we automatically infer the data range from max value. 
+    """
+    image = image.astype('float32')
+    if image.max() < 1:
+        image = image * 255
+    image = image.astype('uint8')
     return Image.fromarray(image)
+
+
+def pil_to_array(image: Image.Image, data_range=255):
+    """ convert a pillow image to a float32 ndarray, range from [0,1]
+        - [H,W] will be padded to [H,W,1]
+    """
+    image = np.array(image).astype('float32')
+    image = image / data_range
+    if len(image.shape) == 2:
+        image = image[:, :, np.newaxis]
+    return image
 
 
 def imresize(data, size, mode='cubic'):
