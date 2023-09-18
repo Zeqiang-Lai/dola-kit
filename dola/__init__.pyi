@@ -14,9 +14,7 @@ __all__ = [
     'imshow',
     
     # convert
-    'to_pillow_image',
-    
-    # trasnform
+    'to_pil',
     'imresize',
     
     # download
@@ -37,7 +35,6 @@ from . import plot
 from . import examples
 
 from .plot import imshow
-from .convert import to_pillow_image
+from .convert import to_pil, imresize
 
-from .transform import imresize
 from .download import download_url
