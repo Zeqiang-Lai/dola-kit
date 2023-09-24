@@ -3,7 +3,8 @@ from typing import List
 
 import numpy as np
 import matplotlib.pyplot as plt
-
+import math
+import PIL
 
 def add_text(image, text):
     image = cv2.resize(image, (512, 512))
@@ -59,3 +60,17 @@ def imshow(*imgs: List[np.ndarray],
         if titles is not None: plt.title(titles[idx])
         if off_axis: plt.axis('off')
     plt.show()
+
+
+def image_grid(imgs):
+    n = len(imgs)
+    rows = int(math.sqrt(n))
+    cols = math.ceil(n/rows)
+
+    w, h = imgs[0].size
+    grid = PIL.Image.new('RGB', size=(cols*w, rows*h))
+    grid_w, grid_h = grid.size
+
+    for i, img in enumerate(imgs):
+        grid.paste(img, box=(i % cols*w, i//cols*h))
+    return grid
