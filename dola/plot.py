@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import math
 import PIL
 
+
 def add_text(image, text):
     image = cv2.resize(image, (512, 512))
     # overlay space
@@ -52,13 +53,17 @@ def imshow(*imgs: List[np.ndarray],
     row = (len(imgs) - 1) // maxcol + 1
     col = maxcol if len(imgs) >= maxcol else len(imgs)
     for idx, img in enumerate(imgs):
-        if img.max() > 2: img = img / 255
+        if img.max() > 2:
+            img = img / 255
         img = img.clip(0, 1)
-        if gray: plt.gray()
+        if gray:
+            plt.gray()
         plt.subplot(row, col, idx + 1)
         plt.imshow(img)
-        if titles is not None: plt.title(titles[idx])
-        if off_axis: plt.axis('off')
+        if titles is not None:
+            plt.title(titles[idx])
+        if off_axis:
+            plt.axis('off')
     plt.show()
 
 
