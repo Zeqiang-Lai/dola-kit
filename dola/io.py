@@ -68,17 +68,17 @@ def lo(*xs, verbose=0):
         _lo(x, varname.argname(f"xs[{i}]"))
 
 
-def read_json(path):
+def load_json(path):
     with open(path, "r") as f:
         return json.load(f)
 
 
-def write_json(path, x):
+def save_json(x, path, **kwargs):
     with open(path, "w") as f:
-        json.dump(x, f, indent=2)
+        json.dump(x, f, **kwargs)
 
 
-def read_image(path, mode="float", order="RGB"):
+def load_image(path, mode="float", order="RGB"):
 
     if mode == "pil":
         return Image.open(path)
@@ -102,7 +102,7 @@ def read_image(path, mode="float", order="RGB"):
         return img
 
 
-def write_image(path, img, order="RGB"):
+def save_image(img, path, order="RGB"):
 
     if torch.is_tensor(img):
         img = img.detach().cpu().numpy()
