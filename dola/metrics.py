@@ -1,6 +1,7 @@
-from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 import functools
+
 import numpy as np
+from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 
 FORMAT_HWC = 'hwc'
 FORMAT_CHW = 'chw'
