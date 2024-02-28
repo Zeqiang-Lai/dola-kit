@@ -1,9 +1,9 @@
-import cv2
+import math
 from typing import List
 
-import numpy as np
+import cv2
 import matplotlib.pyplot as plt
-import math
+import numpy as np
 import PIL
 
 
@@ -29,25 +29,13 @@ def add_text(image, text):
     return output
 
 
-def imshow(*imgs: List[np.ndarray],
-           maxcol: int = 3,
-           gray: bool = False,
-           titles: List[str] = None,
-           off_axis: bool = True) -> None:
-    """
-    Display one or more images in a grid with customizable parameters such as 
-    maximum number of columns, grayscale, and titles.
-
-    Args:
-      imgs (List[np.ndarray]): a list of images.
-      maxcol (int): The maximum number of columns to display the images in. If there are more images than
-        maxcol, they will be displayed in multiple rows. The default value is 3, defaults to 3 (optional)
-      gray (bool): A boolean parameter that determines whether the image(s) should be displayed in
-        grayscale or in color. If set to True, the images will be displayed in grayscale. If set to False,
-        the images will be displayed in color, defaults to False (optional)
-      titles (List[str]): titles is a list of strings that contains the titles for each image being displayed. If titles is None, then no titles will be displayed
-      off_axis (bool): whether to remove axis in the images.
-    """
+def imshow(
+    *imgs: List[np.ndarray],
+    maxcol: int = 3,
+    gray: bool = False,
+    titles: List[str] = None,
+    off_axis: bool = True
+):
     if len(imgs) != 1:
         plt.figure(figsize=(10, 5), dpi=300)
     row = (len(imgs) - 1) // maxcol + 1
@@ -74,7 +62,6 @@ def image_grid(imgs):
 
     w, h = imgs[0].size
     grid = PIL.Image.new('RGB', size=(cols*w, rows*h))
-    grid_w, grid_h = grid.size
 
     for i, img in enumerate(imgs):
         grid.paste(img, box=(i % cols*w, i//cols*h))
