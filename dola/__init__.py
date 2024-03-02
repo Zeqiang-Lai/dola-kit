@@ -7,3 +7,4 @@ from .os import *
 from .plot import *
 from .utils import *
 from . import compute
+from . import nn
