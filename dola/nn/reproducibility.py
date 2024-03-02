@@ -1,11 +1,10 @@
-from typing import Sequence, Optional
 import random
+from typing import Optional, Sequence
 
-import torch
-from torch.utils.data.dataloader import DataLoader
-from torch.utils.data import Dataset, Sampler
 import numpy as np
-
+import torch
+from torch.utils.data import Dataset, Sampler
+from torch.utils.data.dataloader import DataLoader
 
 # This module provide utils for controling reproducibility
 # https://pytorch.org/docs/stable/notes/randomness.html

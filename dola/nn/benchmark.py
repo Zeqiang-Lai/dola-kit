@@ -12,17 +12,17 @@ def model_size(model: torch.nn.Module, trainable: bool = False) -> float:
 
 class synchronize_timer:
     """ Synchronized timer to count the inference time of `nn.Module.forward`.
-        
+
         Example:
         ```python
         with synchronize_timer() as t:
             run()
         print(t())
         ```
-        
+
         `t()` in ms.
     """
-    
+
     def __enter__(self):
         self.start = torch.cuda.Event(enable_timing=True)
         self.end = torch.cuda.Event(enable_timing=True)
