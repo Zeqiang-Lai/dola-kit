@@ -1,6 +1,7 @@
-import torch.nn as nn
-import torch
 from typing import Sequence, Union
+
+import torch
+import torch.nn as nn
 
 
 def freeze(module: nn.Module):
@@ -29,3 +30,21 @@ def move(data: Union[torch.Tensor, Sequence, dict], device: torch.device):
     if isinstance(data, dict):
         return {k: move(v, device=device) for k, v in data.items()}
     return data
+
+
+def load(path):
+    if path.endswith('.safetensors'):
+        from safetensors import safe_open
+        tensors = {}
+        with safe_open(path, framework="pt", device="cpu") as f:
+            for key in f.keys():
+                tensors[key] = f.get_tensor(key)
+        return tensors
+    return torch.load(path)
+
+
+def print_parameters(net, trainable=True):
+    for k, v in net.named_parameters():
+        if trainable and not v.requires_grad:
+            continue
+        print(k, v.shape)
