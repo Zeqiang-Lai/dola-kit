@@ -55,10 +55,13 @@ def imshow(
     plt.show()
 
 
-def image_grid(imgs):
+def image_grid(imgs, rows=None, cols=None):
     n = len(imgs)
-    rows = int(math.sqrt(n))
-    cols = math.ceil(n/rows)
+
+    if rows is None:
+        rows = int(math.sqrt(n))
+    if cols is None:
+        cols = math.ceil(n/rows)
 
     w, h = imgs[0].size
     grid = PIL.Image.new('RGB', size=(cols*w, rows*h))
@@ -66,3 +69,13 @@ def image_grid(imgs):
     for i, img in enumerate(imgs):
         grid.paste(img, box=(i % cols*w, i//cols*h))
     return grid
+
+
+def make_transparent_background_white(image):
+    if image.shape[-1] == 3:
+        return image
+    image = image.astype('float')
+    image[:, :, :3] += np.expand_dims((image[:, :, -1] == 0)*255, -1)
+    image = np.clip(image, 0, 255)
+    image = image.astype('uint8')[:, :, :3]
+    return image

@@ -11,8 +11,6 @@ import numpy as np
 
 from rich.console import Console
 
-# inspect array like object x and report stats
-
 
 def lo(*xs, verbose=0):
 
@@ -79,9 +77,12 @@ def save_json(x, path, **kwargs):
 
 
 def load_image(path, mode="float", order="RGB"):
-
+    from .image import make_transparent_background_white
     if mode == "pil":
-        return Image.open(path)
+        image = Image.open(path)
+        image = np.array(image)
+        image = make_transparent_background_white(image)
+        return Image.fromarray(image).convert(order)
 
     img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
 
@@ -92,6 +93,8 @@ def load_image(path, mode="float", order="RGB"):
                 img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
             else:
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+    img = make_transparent_background_white(img)
 
     # mode
     if "float" in mode:
@@ -122,100 +125,3 @@ def save_image(img, path, order="RGB"):
     if dir_path != '' and not os.path.exists(dir_path):
         os.makedirs(os.path.dirname(path), exist_ok=True)
     cv2.imwrite(path, img)
-
-
-def load_file_from_url(url, model_dir=None, progress=True, file_name=None):
-
-    from torch.hub import download_url_to_file, get_dir
-    from urllib.parse import urlparse
-
-    """Load file form http url, will download models if necessary.
-
-    Ref:https://github.com/1adrianb/face-alignment/blob/master/face_alignment/utils.py
-
-    Args:
-        url (str): URL to be downloaded.
-        model_dir (str): The path to save the downloaded model. Should be a full path. If None, use pytorch hub_dir.
-            Default: None.
-        progress (bool): Whether to show the download progress. Default: True.
-        file_name (str): The downloaded file name. If None, use the file name in the url. Default: None.
-
-    Returns:
-        str: The path to the downloaded file.
-    """
-    if model_dir is None:  # use the pytorch hub_dir
-        hub_dir = get_dir()
-        model_dir = os.path.join(hub_dir, "checkpoints")
-
-    os.makedirs(model_dir, exist_ok=True)
-
-    parts = urlparse(url)
-    filename = os.path.basename(parts.path)
-    if file_name is not None:
-        filename = file_name
-    cached_file = os.path.abspath(os.path.join(model_dir, filename))
-    if not os.path.exists(cached_file):
-        print(f'Downloading: "{url}" to {cached_file}\n')
-        download_url_to_file(url, cached_file, hash_prefix=None, progress=progress)
-    return cached_file
-
-
-def is_format(f, format):
-    return os.path.splitext(f)[1].lower() in format
-
-
-def batch_process_files(
-    process_fn, path, out_path,
-    overwrite=False,
-    in_format=[".jpg", ".jpeg", ".png"],
-    out_format=None,
-    color_order="RGB",
-    **kwargs
-):
-
-    if os.path.isdir(path):
-        file_paths = glob.glob(os.path.join(path, "*"))
-        file_paths = [f for f in file_paths if is_format(f, in_format)]
-    else:
-        file_paths = [path]
-
-    if os.path.dirname(out_path) != '':
-        os.makedirs(os.path.dirname(out_path), exist_ok=True)
-
-    for file_path in tqdm.tqdm(file_paths):
-        try:
-
-            if len(file_paths) == 1:
-                file_out_path = out_path
-            else:
-                file_out_path = os.path.join(out_path, os.path.basename(file_path))
-
-            if out_format is not None:
-                file_out_path = os.path.splitext(file_out_path)[0] + out_format
-
-            if os.path.exists(file_out_path) and not overwrite:
-                print(f"[INFO] ignoring {file_path} --> {file_out_path}")
-                continue
-
-            # dispatch suitable loader and writer
-            # only support image and text file
-            if is_format(file_path, ['.jpg', '.jpeg', '.png']):
-                input = read_image(file_path, mode="uint8", order=color_order)
-            else:
-                with open(file_path, "r") as f:
-                    input = f.read()
-
-            output = process_fn(input, **kwargs)
-
-            # only support image, npy or text file
-            if is_format(file_out_path, ['.jpg', '.jpeg', '.png']):
-                write_image(file_out_path, output, order=color_order)
-            elif is_format(file_out_path, ['.npy']):
-                np.save(file_out_path, output)
-            else:
-                with open(file_out_path, "w") as f:
-                    f.write(output)
-
-        except Exception as e:
-            print(f"[Error] when processing {file_path} --> {file_out_path}")
-            print(e)

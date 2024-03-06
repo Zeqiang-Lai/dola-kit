@@ -10,6 +10,10 @@ def fileext(path):
     return os.path.splitext(path)[1]
 
 
+def is_format(f, format):
+    return os.path.splitext(f)[1].lower() in format
+
+
 def make_valid_filename(input_string):
     # Replace spaces with underscores
     filename = input_string.replace(' ', '_')
@@ -23,3 +27,9 @@ def make_valid_filename(input_string):
         filename = filename[:max_length]
 
     return filename
+
+
+def current_dir(file=None):
+    if file is None:
+        file = __file__
+    return os.path.dirname(os.path.abspath(file))

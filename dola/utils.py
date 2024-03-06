@@ -10,8 +10,8 @@ def cmd_str():
     return f'python {args}'
 
 
-def datetime_str():
-    dtstr = datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
+def now(format="%Y-%m-%d-%H:%M:%S"):
+    dtstr = datetime.now().strftime(format)
     return dtstr
 
 

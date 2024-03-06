@@ -4,7 +4,8 @@ from .examples import *
 from .io import *
 from .metrics import *
 from .os import *
-from .plot import *
+from .image import *
 from .utils import *
 from . import compute
 from . import nn
+from .mmcv import *
